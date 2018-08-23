@@ -1,11 +1,11 @@
 pragma solidity ^0.4.24;
 
-contract MersenTwister{
+contract MersenTwister {
 	
 	uint[] private MT = new uint[](624);
 	uint private index;
 	
-	function initializeGenerator(uint inp) internal {
+	function initializeGenerator(uint inp) public {
 		index = 0;
 		MT[0] = inp;
 		for (uint i = 1; i < 623; i++) {
@@ -13,7 +13,7 @@ contract MersenTwister{
 		}
 	}
 	
-	function generateNumbers() public {
+	function generateNumbers() private {
 		for (uint i = 0; i < 623; i++) {
 			uint y = (MT[i] & 0x80000000) + (MT[(i + 1) % 624] & 0x7fffffff);
 			MT[i] = MT[(i + 397) % 624] ^ (y >> 1);
@@ -39,28 +39,34 @@ contract MersenTwister{
 }
 
 
-contract Generator is MersenTwister{
+contract Generator is MersenTwister {
 	
 	uint[] private seed;
 	
-	constructor() public{
+	event AddNewSeed(uint _seed, address from);
+	event RandomNumberGenerated(int number, address whoStart);
+
+	constructor() public {
 	}
 	
-	function getSeed() public view returns(uint[]){
+	function getSeed() public view returns(uint[]) {
 		return seed;
 	}
 	
-	function addSeed(uint _seed) public returns(bool){
+	function addSeed(uint _seed) public returns(bool) {
 		seed.push(_seed);
+		emit AddNewSeed(_seed, msg.sender);
 		return true;
 	}
 	
-	function startGenerate() public {
+	function startGenerate() public returns (uint) {
 		uint generatedNumber = 0;
 		for (uint i = 0; i < seed.length; i++){
-			generatedNumber = generatedNumber + seed[i];
+			generatedNumber = generatedNumber ^ seed[i];
 		}
 		initializeGenerator(generatedNumber);
+		seed.length = 0;
+		return extractNumber();
 	}
 	
 }

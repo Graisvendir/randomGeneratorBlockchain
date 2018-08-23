@@ -4,10 +4,59 @@
 		<link rel="stylesheet" href="./css/style.css">
 	</head>
 
-	<body onload="App.initWeb3()">
+	<body onload="onDocumentLoad()">
 		<div>
+			<h1>Random Number Generator</h1>
+			<div class="grid-interact">
+				<!--status-->
+				<div class="grid-status">
+					<h2>Status</h2>
+					<table>
+						<tbody>
+							<tr>
+								<td>
+									<p>Connect to blockchain: </p> 
+								</td>
+								<td>
+									<p class="success" id="connection"></p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<p>Ready to interact with Contract: </p> 
+								</td>
+								<td>
+									<p class="success" id="interact"></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="grid-seed">
+					<h2>Get seed</h2>
+					<input class="button" type="button" id="button" onclick="buttonAddSeed()" value="Get seed">
+					<table>
+						<tbody id="seeds">
 
+						</tbody>
+					</table>
+				</div>
+				<div class="grid-addSeed">
+					<h2>Add rundom generated seed</h2>
+					<input type="text" placeholder="number" id="value">
+					<button class="button" onclick="addGeneratedNumberToInput()" value="Generate"></button>
+					<p><span class="success" id="addSeedSuccess"><span></p>
+				</div>
+				<div class="grid-balance">
+					<h2>Balance of #hex address#</h2>
+					<input type="text" placeholder="balance of" id="balanceOf">
+					<input class="button" type="button" id="button" onclick="App.balanceOf()" value="Take balance">
+					<p>Balance: <span class="success" id="balance"></span></p>
+				</div>
+			</div>
 		</div>
+		<script src="/js/MersenTwister.js"></script>
+		<script src="/js/app.js"></script>
 		<script src="/js/truffle-contract.js"></script>
 		<script src="/js/web3.js"></script>
 		<script src="/js/main.js"></script>
