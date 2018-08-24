@@ -88,19 +88,27 @@ let App = {
 	 * @returns {number} 
 	 */
 	startGeneratingOnBlockchain: function() {
-		web3.eth.getAccounts(function(error, accounts){
-			if (error){
-				throw error;
-			}
-			let account = accounts[0];
+		return new Promise(
+			function(onSuccess, onReject) {
+				web3.eth.getAccounts(function(error, accounts){
+					if (error){
+						throw error;
+					}
+					let account = accounts[0];
 
-			App.contracts.Generator.deployed()
-				.then(function(instance) {
-					return instance.startGenerate.call(); 
-				}).catch(function(error){
-					throw error; 
+					App.contracts.Generator.deployed()
+						.then(function(instance) {
+							return instance.startGenerate.call();
+						}).then(
+							(randomNumber) => {
+								onSuccess(randomNumber);
+							})
+						.catch(function(error){
+							onReject(error);
+							throw error; 
+						});
 				});
-		});
+			});
 	}
 };  
 

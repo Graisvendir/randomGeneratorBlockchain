@@ -50,6 +50,11 @@ input[type="text"]{
 .center{
 	margin: 10px auto;
 }
+
+.leftColumn{
+	min-width: 300px;
+}
+
 .success{
 	color: #006400;
 }

@@ -27,7 +27,12 @@ function getSeedFromBlockchainAndPublish() {
 }
 
 function generateNumberOnBlockchain() {
-	App.startGeneratingOnBlockchain();
+	App.startGeneratingOnBlockchain()
+		.then(
+			(generatedNumber) => {
+				document.getElementById('number').innerHTML = generatedNumber;
+			});
+	
 }
 
 function onDocumentLoad(){
