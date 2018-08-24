@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 contract MersenTwister {
     
-	function initializeGenerator(uint inp, uint index, uint[] MT) private pure returns (uint, uint[]) {
+	function initializeGenerator(uint inp, uint index, uint[624] MT) private pure returns (uint, uint[624]) {
 		index = 0;
 		MT[0] = inp;
 		for (uint i = 1; i < 623; i++) {
@@ -11,7 +11,7 @@ contract MersenTwister {
 		return (index, MT);
 	}
 	
-	function generateNumbers(uint[] MT) private pure returns (uint[]) {
+	function generateNumbers(uint[624] MT) private pure returns (uint[624]) {
 		for (uint i = 0; i < 623; i++) {
 			uint y = (MT[i] & 0x80000000) + (MT[(i + 1) % 624] & 0x7fffffff);
 			MT[i] = MT[(i + 397) % 624] ^ (y >> 1);
@@ -32,7 +32,7 @@ contract MersenTwister {
 	}
 	
 	function generateRandomNumber(uint input) public pure returns (uint) {
-	    uint[] memory MT = new uint[](624);
+	    uint[624] memory MT;
 	    uint index;
 	    uint generatedNumber = 0;
 	    (input, MT) = initializeGenerator(input, index, MT);
