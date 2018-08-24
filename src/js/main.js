@@ -1,18 +1,26 @@
 'use strict';
 
+function buttonGenerateSeed() {
+	MersenTwister.initializeGenerator(new Date().getMilliseconds());
+	let value = MersenTwister.extractNumber();
+	document.getElementById("value").value = value;
+}
+
 function buttonAddSeed() {
-	let seed = document.getElementById('seed').value;
+	let seed = document.getElementById('value').value;
 	App.addSeed(seed);
+	console.log('seed added');
 }
 
 function buttonGetSeed() {
-
+	let allSeeds = App.getSeed();
+	for (let i = 0; i < allSeeds.length; i++){
+		document.getElementById('seeds').innerHTML += '<tr><p>' + allSeeds[i] + '</p></tr>';
+	}
 }
 
 function buttondGenerate() {
-	this.initializeGenerator(new Date().getMilliseconds());
-	let value = this.extractNumber();
-	document.getElementById("value").value = value;
+	App.startGenerating();
 }
 
 function onDocumentLoad(){

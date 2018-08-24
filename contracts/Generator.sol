@@ -1,19 +1,17 @@
 pragma solidity ^0.4.24;
 
 contract MersenTwister {
-	
-	uint[] private MT = new uint[](624);
-	uint private index;
-	
-	function initializeGenerator(uint inp) public {
+    
+	function initializeGenerator(uint inp, uint index, uint[] MT) private pure returns (uint, uint[]) {
 		index = 0;
 		MT[0] = inp;
 		for (uint i = 1; i < 623; i++) {
-			MT[i] = (0x6c078965 * (MT[i-1] ^ (MT[i-1] >> 30)) + i);
+			MT[i] = (0x6c078965 * (MT[i - 1] ^ (MT[i - 1] >> 30)) + i);
 		}
+		return (index, MT);
 	}
 	
-	function generateNumbers() private {
+	function generateNumbers(uint[] MT) private pure returns (uint[]) {
 		for (uint i = 0; i < 623; i++) {
 			uint y = (MT[i] & 0x80000000) + (MT[(i + 1) % 624] & 0x7fffffff);
 			MT[i] = MT[(i + 397) % 624] ^ (y >> 1);
@@ -21,20 +19,28 @@ contract MersenTwister {
 				MT[i] = MT[i] ^ 0x9908b0df;
 			}
 		}
+		return MT;
 	}
 	
-	function extractNumber() public returns (uint) {
-		if (index == 0) {
-			generateNumbers();
-		}
-		uint y = MT[index];
-		 
+	function extractNumber(uint index, uint y) private pure returns (uint, uint) {
 		y = y ^ (y >> 11);
 		y = y ^ (y << 7 & (0x9d2c5680));
 		y = y ^ (y << 15 & (0xefc60000)); // 0xefc60000
 		y = y ^ (y >> 18);
 		index = (index + 1) % 624;
-		return y;
+		return (index, y);
+	}
+	
+	function generateRandomNumber(uint input) public pure returns (uint) {
+	    uint[] memory MT = new uint[](624);
+	    uint index;
+	    uint generatedNumber = 0;
+	    (input, MT) = initializeGenerator(input, index, MT);
+	    if (index == 0) {
+			MT = generateNumbers(MT);
+		}
+		(index, generatedNumber) = extractNumber(index, MT[index]);
+		return generatedNumber;
 	}
 }
 
@@ -60,13 +66,12 @@ contract Generator is MersenTwister {
 	}
 	
 	function startGenerate() public returns (uint) {
-		uint generatedNumber = 0;
+		uint comparedNumber = 0;
 		for (uint i = 0; i < seed.length; i++){
-			generatedNumber = generatedNumber ^ seed[i];
+			comparedNumber = comparedNumber ^ seed[i];
 		}
-		initializeGenerator(generatedNumber);
 		seed.length = 0;
-		return extractNumber();
+		return generateRandomNumber(comparedNumber);
 	}
 	
 }

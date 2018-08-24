@@ -61,8 +61,8 @@ input[type="text"]{
 	grid-gap: 10px;
 	justify-content: center;
 	grid-template-areas:
-			'status supply'
-			'transfer balance';
+			'status seed'
+			'addSeed generate';
 }
 
 .grid-status{
@@ -70,15 +70,15 @@ input[type="text"]{
 }
 
 .grid-seed{
-	grid-area: 'supply';
+	grid-area: 'seed';
 }
 
-.grid-transfer{
-	grid-area: 'transfer';
+.grid-addSeed{
+	grid-area: 'addSeed';
 }
 
-.grid-balance{
-	grid-area: 'balance';
+.grid-generate{
+	grid-area: 'generate';
 }
 
 .hide{

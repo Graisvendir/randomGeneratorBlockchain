@@ -26,20 +26,21 @@ let App = {
 	 */
 	initContract: function() {
 		return new Promise(function(onSuccess, onReject) {
-		readTextFile('Generator.json')
-			.then(function(result) {
-				let abi = JSON.parse(result);
-				App.contracts.Entereum = TruffleContract(abi);
-				App.contracts.Entereum.setProvider(App.web3Provider);
-				onSuccess();
-			}).catch(function(error){
-				throw error;
+			readTextFile('Generator.json')
+				.then(function(result) {
+					let abi = JSON.parse(result);
+					App.contracts.Entereum = TruffleContract(abi);
+					App.contracts.Entereum.setProvider(App.web3Provider);
+					onSuccess();
+				}).catch(function(error){
+					throw error;
+				});
 			});
-		});
 	}, 
 
 	/**
-	 * return 
+	 * return all added seeds
+	 * @returns {array}
 	 */
 	getSeed: function() {
 		App.contracts.Generator.deployed()
@@ -52,13 +53,17 @@ let App = {
 				throw err;
 			});
 	},
+	/**
+	 * add new seed to blockchain
+	 * @param {number} newSeed
+	 */
 	addSeed: function(newSeed) {
 		web3.eth.getAccounts(function(error, accounts){
 			if (error) {
 				throw error;
 			}
 			let account = accounts[0];
-
+			console.log(123155);
 			App.contracts.Generator.deployed()
 				.then(function(instance) {
 					return instance.addSeed(newSeed, {from: account});
@@ -70,6 +75,11 @@ let App = {
 				}
 		});
 	},
+
+	/**
+	 * run generating random number
+	 * @returns {number} 
+	 */
 	startGenerating: function() {
 		web3.eth.getAccounts(function(error, accounts){
 			if (error){

@@ -10,6 +10,7 @@ let MersenTwister = {
 	 */
 	initializeGenerator: function(inp) {
 		index = 0;
+		MT = []
 		MT[0] = inp;
 		for (let i = 1; i < 623; i++) {
 			MT[i] = (0x6c078965 * (MT[i-1] ^ (MT[i-1] >> 30)) + i);
@@ -30,8 +31,8 @@ let MersenTwister = {
 	 * @returns {number} random number
 	 */
 	extractNumber: function() {
-		if (index == 0) {
-			generateNumbers();
+		if (index === 0) {
+			this.generateNumbers();
 		}
 		let y = MT[index];
 		

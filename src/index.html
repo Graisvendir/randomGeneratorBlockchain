@@ -32,9 +32,9 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="grid-seed">
+				<div class="grid-getSeed">
 					<h2>Get seed</h2>
-					<input class="button" type="button" id="button" onclick="buttonAddSeed()" value="Get seed">
+					<button class="button" onclick="buttonGetSeed()">Get seed</button>
 					<table>
 						<tbody id="seeds">
 
@@ -44,13 +44,14 @@
 				<div class="grid-addSeed">
 					<h2>Add rundom generated seed</h2>
 					<input type="text" placeholder="number" id="value">
-					<button class="button" onclick="addGeneratedNumberToInput()" value="Generate"></button>
+					<br>
+					<button class="button" onclick="buttonGenerateSeed()">Generate Seed</button>
+					<button class="button" onclick="buttonAddSeed()">Add Seed</button>
 					<p><span class="success" id="addSeedSuccess"><span></p>
 				</div>
-				<div class="grid-balance">
-					<h2>Balance of #hex address#</h2>
-					<input type="text" placeholder="balance of" id="balanceOf">
-					<input class="button" type="button" id="button" onclick="App.balanceOf()" value="Take balance">
+				<div class="grid-generate">
+					<h2>Generate</h2>
+					<button class="button" onclick="buttonGenerate()">Generate</button>
 					<p>Balance: <span class="success" id="balance"></span></p>
 				</div>
 			</div>
