@@ -1,26 +1,33 @@
 'use strict';
 
-function buttonGenerateSeed() {
-	MersenTwister.initializeGenerator(new Date().getMilliseconds());
-	let value = MersenTwister.extractNumber();
+function GenerateNumberForSeed() {
+	let value = MersenTwister.generateNumberLocaly(new Date().getMilliseconds());
 	document.getElementById("value").value = value;
 }
 
-function buttonAddSeed() {
+function pushSeedToBlockchain() {
 	let seed = document.getElementById('value').value;
-	App.addSeed(seed);
-	console.log('seed added');
+	App.addSeed(seed)
+		.then(
+			() => {
+				console.log('seed added');
+			}
+		);
 }
 
-function buttonGetSeed() {
-	let allSeeds = App.getSeed();
-	for (let i = 0; i < allSeeds.length; i++){
-		document.getElementById('seeds').innerHTML += '<tr><p>' + allSeeds[i] + '</p></tr>';
-	}
+function getSeedFromBlockchainAndPublish() {
+	App.getSeed()
+		.then(
+			(allSeeds) => {
+				for (let i = 0; i < allSeeds.length; i++){
+					document.getElementById('seeds').innerHTML += '<tr><p>' + allSeeds[i] + '</p></tr>';
+				}
+			}
+		);
 }
 
-function buttondGenerate() {
-	App.startGenerating();
+function generateNumberOnBlockchain() {
+	App.startGeneratingOnBlockchain();
 }
 
 function onDocumentLoad(){

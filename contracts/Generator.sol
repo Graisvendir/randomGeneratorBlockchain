@@ -50,7 +50,7 @@ contract Generator is MersenTwister {
 	uint[] private seed;
 	
 	event AddNewSeed(uint _seed, address from);
-	event RandomNumberGenerated(int number, address whoStart);
+	event RandomNumberGenerated(uint number, address whoStart);
 
 	constructor() public {
 	}
@@ -71,7 +71,9 @@ contract Generator is MersenTwister {
 			comparedNumber = comparedNumber ^ seed[i];
 		}
 		seed.length = 0;
-		return generateRandomNumber(comparedNumber);
+		uint value = generateRandomNumber(comparedNumber);
+		emit RandomNumberGenerated(value, msg.sender);
+		return value;
 	}
 	
 }

@@ -34,7 +34,7 @@
 				</div>
 				<div class="grid-getSeed">
 					<h2>Get seed</h2>
-					<button class="button" onclick="buttonGetSeed()">Get seed</button>
+					<button class="button" onclick="getSeedFromBlockchainAndPublish()">Get seed</button>
 					<table>
 						<tbody id="seeds">
 
@@ -45,13 +45,13 @@
 					<h2>Add rundom generated seed</h2>
 					<input type="text" placeholder="number" id="value">
 					<br>
-					<button class="button" onclick="buttonGenerateSeed()">Generate Seed</button>
-					<button class="button" onclick="buttonAddSeed()">Add Seed</button>
+					<button class="button" onclick="GenerateNumberForSeed()">Generate Seed</button>
+					<button class="button" onclick="pushSeedToBlockchain()">Add Seed</button>
 					<p><span class="success" id="addSeedSuccess"><span></p>
 				</div>
 				<div class="grid-generate">
 					<h2>Generate</h2>
-					<button class="button" onclick="buttonGenerate()">Generate</button>
+					<button class="button" onclick="generateNumberOnBlockchain()">Generate</button>
 					<p>Balance: <span class="success" id="balance"></span></p>
 				</div>
 			</div>

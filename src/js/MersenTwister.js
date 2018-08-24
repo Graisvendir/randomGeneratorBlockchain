@@ -42,5 +42,10 @@ let MersenTwister = {
 		y = y ^ (y >> 18);
 		index = (index + 1) % 624;
 		return y;
+	},
+
+	generateNumberLocaly: function(Seed) {
+		this.initializeGenerator(Seed);
+		return this.extractNumber();
 	}
 }

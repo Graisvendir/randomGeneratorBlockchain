@@ -29,10 +29,11 @@ let App = {
 			readTextFile('Generator.json')
 				.then(function(result) {
 					let abi = JSON.parse(result);
-					App.contracts.Entereum = TruffleContract(abi);
-					App.contracts.Entereum.setProvider(App.web3Provider);
+					App.contracts.Generator = TruffleContract(abi);
+					App.contracts.Generator.setProvider(App.web3Provider);
 					onSuccess();
 				}).catch(function(error){
+					onReject();
 					throw error;
 				});
 			});
@@ -43,36 +44,42 @@ let App = {
 	 * @returns {array}
 	 */
 	getSeed: function() {
-		App.contracts.Generator.deployed()
-			.then(function(instance) {
-				return instance.getSeed.call();
-			}).then(function(seed) {
-				console.log(seed);
-				return seed;
-			}).catch(function(err) {
-				throw err;
-			});
+		return new Promise(function(onSuccess, onReject){
+			App.contracts.Generator.deployed()
+				.then(function(instance) {
+					
+					return instance.getSeed.call();
+				}).then(function(seed) {
+					onSuccess(seed);
+					return seed;
+				}).catch(function(err) {
+					onReject();
+					throw err;
+				});
+		});
 	},
 	/**
 	 * add new seed to blockchain
 	 * @param {number} newSeed
 	 */
 	addSeed: function(newSeed) {
-		web3.eth.getAccounts(function(error, accounts){
-			if (error) {
-				throw error;
-			}
-			let account = accounts[0];
-			console.log(123155);
-			App.contracts.Generator.deployed()
-				.then(function(instance) {
-					return instance.addSeed(newSeed, {from: account});
-				}).then(function(event) {
-					console.log(event.log);
-				}), function(err) {
-					console.log(err.message);
-					throw err;
+		return new Promise(function(onSuccess, onReject){
+			web3.eth.getAccounts(function(error, accounts){
+				if (error) {
+					throw error;
 				}
+				let account = accounts[0];
+				App.contracts.Generator.deployed()
+					.then(function(instance) {
+						let value = instance.addSeed(newSeed, {from: account}); 
+						onSuccess(value);
+						return value;
+					}), function(err) {
+						onReject();
+						console.log(err.message);
+						throw err;
+					}
+			});
 		});
 	},
 
@@ -80,7 +87,7 @@ let App = {
 	 * run generating random number
 	 * @returns {number} 
 	 */
-	startGenerating: function() {
+	startGeneratingOnBlockchain: function() {
 		web3.eth.getAccounts(function(error, accounts){
 			if (error){
 				throw error;
