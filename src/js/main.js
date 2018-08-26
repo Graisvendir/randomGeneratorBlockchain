@@ -1,4 +1,8 @@
 'use strict';
+/**
+ * here is button handlers
+ */
+
 
 function GenerateNumberForSeed() {
 	let value = MersenTwister.generateNumberLocaly(new Date().getMilliseconds());
@@ -30,7 +34,7 @@ function generateNumberOnBlockchain() {
 	App.startGeneratingOnBlockchain()
 		.then(
 			(generatedNumber) => {
-				document.getElementById('number').innerHTML = generatedNumber;
+				document.getElementById('number').innerHTML = generatedNumber % 10000;
 			});
 	
 }

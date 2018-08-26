@@ -1,7 +1,8 @@
 pragma solidity ^0.4.24;
 
+//
 contract MersenTwister {
-    
+
 	function initializeGenerator(uint inp, uint index, uint[624] MT) private pure returns (uint, uint[624]) {
 		index = 0;
 		MT[0] = inp;
@@ -31,6 +32,7 @@ contract MersenTwister {
 		return (index, y);
 	}
 	
+	//
 	function generateRandomNumber(uint input) public pure returns (uint) {
 	    uint[624] memory MT;
 	    uint index;
@@ -44,7 +46,7 @@ contract MersenTwister {
 	}
 }
 
-
+// contract for interaction with generator
 contract Generator is MersenTwister {
 	
 	uint[] private seed;
@@ -54,17 +56,22 @@ contract Generator is MersenTwister {
 
 	constructor() public {
 	}
-	
+	// return all added seeds
 	function getSeed() public view returns(uint[]) {
 		return seed;
 	}
-	
+	// add new seed 
 	function addSeed(uint _seed) public returns(bool) {
 		seed.push(_seed);
 		emit AddNewSeed(_seed, msg.sender);
 		return true;
 	}
 	
+	/*
+		- compare all seeds via xor
+		- clean seeds
+		- return generated number
+	*/
 	function startGenerate() public returns (uint) {
 		uint comparedNumber = 0;
 		for (uint i = 0; i < seed.length; i++){
